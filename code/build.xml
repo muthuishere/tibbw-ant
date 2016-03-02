@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="ant-tibco" basedir="." default="jar">
+
+    <property name="src.dir" value="src"/>
+  
+    <property name="classes.dir" value="classes"/>
+    <property name="jar.dir" value="lib"/>
+
+
+    <target name="clean" description="Delete all generated files">
+        <delete dir="${classes.dir}" failonerror="false"/>
+        <delete file="${jar.dir}/${ant.project.name}.jar"/>
+    </target>
+
+    <target name="compile" description="Compiles the project">
+        <mkdir dir="${classes.dir}"/>
+        <javac srcdir="${src.dir}" destdir="${classes.dir}"/>
+
+    </target>
+
+    <target name="jar" description="Create the ant-tibco jar file" depends="clean,compile">
+        <jar destfile="${jar.dir}/${ant.project.name}.jar" basedir="${classes.dir}"/>
+    </target>
+    
+    
+ 
+       
+</project>

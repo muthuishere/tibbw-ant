@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="ant-tibco" basedir="." default="config.tibco">
+    
+	<!--
+		jarFolder - Location of ant librarys			../lib
+		traHome - Location of tra bin					C:\tibco\tra\5.6\bin
+		domainName - Location of Admin domainName		tibpg
+		domainUser - Location of Admin user				tibpg
+		domainPwd - Location of Admin pwd				tibpg
+		
+		
+		To Build Ear
+			ant -DjarFolder=../lib -DtraHome=C:\tibco\tra\5.6\bin  -DdomainName=tibpg  -DdomainUser=tibpg  -DdomainPwd=tibpg  compile.tibco
+			
+		To Generate varaiables
+			ant -DjarFolder=../lib -DtraHome=C:\tibco\tra\5.6\bin  -DdomainName=tibpg  -DdomainUser=tibpg  -DdomainPwd=tibpg  config.tibco
+
+		To Deploy Ear
+			ant -DjarFolder=../lib -DtraHome=C:\tibco\tra\5.6\bin  -DdomainName=tibpg  -DdomainUser=tibpg  -DdomainPwd=tibpg  config.tibco
+
+		To Generate varaiables
+			ant -DjarFolder=../lib -DtraHome=C:\tibco\tra\5.6\bin  -DdomainName=tibpg  -DdomainUser=tibpg  -DdomainPwd=tibpg  config.tibco
+
+		To Generate varaiables
+			ant -DjarFolder=../lib -DtraHome=C:\tibco\tra\5.6\bin  -DdomainName=tibpg  -DdomainUser=tibpg  -DdomainPwd=tibpg  config.tibco
+
+			
+	
+	-->
+	<property name="ear.dir" value="ear"/>
+    <property name="jar.dir" value="${jarFolder}"/>
+    <property name="tibco.tra.home" value="${traHome}"/>
+    <property name="tibco.domain" value="${domainName}"/>
+	<property name="tibco.domain.user" value="${domainUser}"/>
+	<property name="tibco.domain.pwd" value="${domainPwd}"/>
+	
+        
+    <target name="clean.tibco" description="Delete all generated ear files">
+        <delete dir="${ear.dir}" failonerror="false"/>
+      	<mkdir dir="${ear.dir}"/>
+    </target>
+    
+     <target name="compile.tibco" depends="clean.tibco" description="Compiles BusinessWorks projects">
+         <taskdef name="tibbwBuildEar" classname="org.apache.tools.ant.taskdefs.optional.tibco.TibbwBuildEar" classpath="${jar.dir}/ant-tibco.jar"/>
+         
+         <tibbwBuildEar srcdir="HelloWorldProject" destdir="${ear.dir}" bindir="${tibco.tra.home}">
+         </tibbwBuildEar>
+         
+    </target>
+
+    <target name="config.tibco" depends="compile.tibco" description="Extracts the config file of BusinessWorks projects">
+         <taskdef name="tibbwExportConfig" classname="org.apache.tools.ant.taskdefs.optional.tibco.TibbwExportConfig" classpath="${jar.dir}/ant-tibco.jar"/>
+         
+         <tibbwExportConfig srcdir="${ear.dir}" destdir="${ear.dir}" bindir="${tibco.tra.home}">	       
+	     </tibbwExportConfig>
+	     
+    </target>
+    
+    <target name="deploy.tibco" description="Deploys the BusinessWorks ears">
+         <taskdef name="tibbwDeploy" classname="org.apache.tools.ant.taskdefs.optional.tibco.TibbwDeploy" classpath="${jar.dir}/ant-tibco.jar"/>
+         
+         <tibbwDeploy srcdir="${ear.dir}" bindir="${tibco.tra.home}" domain="${tibco.domain}" user="${tibco.domain.user}" password="${tibco.domain.pwd}">
+	     </tibbwDeploy>
+	     
+    </target>
+    
+     <target name="undeploy.tibco" description="Undeploys the BusinessWorks ears">
+         <taskdef name="tibbwUndeploy" classname="org.apache.tools.ant.taskdefs.optional.tibco.TibbwUndeploy" classpath="${jar.dir}/ant-tibco.jar"/>
+         
+         <tibbwUndeploy srcdir="${ear.dir}" bindir="${tibco.tra.home}" domain="${tibco.domain}" user="${tibco.domain.user}" password="${tibco.domain.pwd}">	     
+	     </tibbwUndeploy>
+	     
+    </target>
+    
+    <target name="delete.tibco" description="Deletes the BusinessWorks ears">
+         <taskdef name="tibbwDelete" classname="org.apache.tools.ant.taskdefs.optional.tibco.TibbwDelete" classpath="${jar.dir}/ant-tibco.jar"/>
+         
+         <tibbwDelete srcdir="${ear.dir}" bindir="${tibco.tra.home}" domain="${tibco.domain}" user="${tibco.domain.user}" password="${tibco.domain.pwd}">	     
+	     </tibbwDelete>
+	     
+    </target>
+    
+</project>
